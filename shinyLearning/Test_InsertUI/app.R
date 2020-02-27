@@ -121,12 +121,32 @@ ui <- dashboardPagePlus(skin = "red",
                             ),
                             tabItem(tabName = "section-4",
                                     h2("Show the homophily of your network"),
-                                    
-                                    box(title = "How similar is your network?",
-                                        h4("maybe pretty similar")
+                                    h4("How similar is your network?"),
+                                    # box(title = "How similar is your network?",
+                                    #     h4("maybe pretty similar")
+                                    #     # uiOutput("person"),
+                                        # ),
+                                
                                         # uiOutput("person"),
-                                        )
+                                        # infoBoxOutput("gender","Gender Homophily"),
+                                        # infoBoxOutput("age","Age Homophily")
                                     
+                                        fluidRow(
+                                            infoBox("Age", paste0(30, "%"), icon = icon("align-left"), fill=TRUE, color="olive" )
+                                        ),
+                                        fluidRow(
+                                            infoBox("Gender", paste0(90, "%"), icon = icon("angle-double-up"), fill=TRUE, color="olive" )
+                                        ),
+                                        fluidRow(
+                                            infoBox("Race", paste0(50, "%"), icon = icon("bars"), fill=TRUE, color="olive" )
+                                        ),
+                                        fluidRow(
+                                            infoBox("Social Status", paste0(66, "%"), icon = icon("bookmark"), fill=TRUE, color="olive" )
+                                        ),
+                                    box(
+                                        h4("Based of these results your network is very similar to you")
+                                           )
+                                
                             )
                         )
                         
@@ -149,12 +169,6 @@ ui <- dashboardPagePlus(skin = "red",
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-    # observeEvent(input$insertBtn, {
-    #     insertUI(
-    #         selector = '#placeholder',
-    #         ui = textInput('txt3', 'Seeks advice from: ')
-    #     )
-    # })
     
     col_names <- reactive(paste0("person", seq_len(input$amt)))
     
@@ -175,13 +189,6 @@ server <- function(input, output, session) {
         map_chr(col_names(), ~ input[[.x]])
     })
     
-    
-    # observeEvent(input$removeBtn, {
-    #     removeUI(
-    #         selector = 'div:has(> #txt1)'
-    #     )
-    # })
-    
     output$distPlot <- renderPlot({
         # generate bins based on input$bins from ui.R
         x    <- faithful[, 2]
@@ -191,21 +198,16 @@ server <- function(input, output, session) {
         hist(x, breaks = bins, col = 'darkgray', border = 'white')
     })
     
-    # Want to save off the survey information when the user is done (ie like maybe right before show them the results?)
+# Want to save off the survey information when the user is done (ie like maybe right before show them the results?)
 
-    # writeValues <- reactive({
-    #     file <- paste("data-", Sys.Date(), ".csv", sep="")
-    #     inputsList <- names(reactiveValuesToList(input))
-    #     exportVars <- paste0(inputsList, ",", sapply(inputsList, function(inpt) input[[inpt]]))
-    #     write(exportVars, file)
-    # })    
-    
-    
     observeEvent(input$downloadData, {
         file <- paste("data-", Sys.Date(), ".csv", sep="")
         inputsList <- names(reactiveValuesToList(input))
         exportVars <- paste0(inputsList, ",", sapply(inputsList, function(inpt) input[[inpt]]))
         write(exportVars, file)
+        
+        updateTabItems(session, "sidebarmenu",
+                          selected = "section-4")
     })
     
 
