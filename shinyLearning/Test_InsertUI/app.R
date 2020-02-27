@@ -20,37 +20,37 @@ ui <- dashboardPagePlus(skin = "red",
                     
                     dashboardHeader(title = "Personal Network"), 
                     
-                    # dashboardSidebar(width = 75,
-                    #                  conditionalPanel("input.next1 != 12 && input.next2 != 54", {
-                    #                      sidebarMenu(id = "sidebarmenu",
-                    #                                  menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x"))
-                    #                      )
-                    #                  }),
-                    #                  
-                    #                  conditionalPanel("input.next1 == 12 && input.next2 != 54", {
-                    #                      sidebarMenu(id = "sidebarmenu",
-                    #                                  menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
-                    #                                  menuItem("",tabName = "section-2", icon = icon("people-carry, "fa-3x"))
-                    #                      )
-                    #                  }),
-                    #                  
-                    #                  conditionalPanel("input.next1 == 12 && input.next2 == 54", {
-                    #                      sidebarMenu(id = "sidebarmenu",
-                    #                                  menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
-                    #                                  menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x")),
-                    #                                  menuItem("",tabName = "section-3", icon = icon("comments", "fa-3x"))
-                    #                      )
-                    #                  })                                     
-                    #                  
-                    # ),
-                    
                     dashboardSidebar(width = 75,
+                                     conditionalPanel("input.next1 != 12 && input.next2 != 54", {
+                                         sidebarMenu(id = "sidebarmenu",
+                                                     menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x"))
+                                         )
+                                     }),
+
+                                     conditionalPanel("input.next1 == 12 && input.next2 != 54", {
+                                         sidebarMenu(id = "sidebarmenu",
+                                                     menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
+                                                     menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x"))
+                                         )
+                                     }),
+
+                                     conditionalPanel("input.next1 == 12 && input.next2 == 54", {
                                          sidebarMenu(id = "sidebarmenu",
                                                      menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
                                                      menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x")),
                                                      menuItem("",tabName = "section-3", icon = icon("comments", "fa-3x"))
                                          )
+                                     })
+
                     ),
+                    
+                    # dashboardSidebar(width = 75,
+                    #                      sidebarMenu(id = "sidebarmenu",
+                    #                                  menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
+                    #                                  menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x")),
+                    #                                  menuItem("",tabName = "section-3", icon = icon("comments", "fa-3x"))
+                    #                      )
+                    # ),
                     
                     dashboardBody(
                         
@@ -77,21 +77,21 @@ ui <- dashboardPagePlus(skin = "red",
                                                                onInitialize = I('function() { this.setValue(""); }')
                                                            )
                                             ),
-                                            textInput("q4", "Question 4")
+                                            textInput("q4", "Question 4", placeholder = "Sample hint text")
                                         ),
                                         
                                         box(title = "Move to next",
-                                            textInput("next1", "Enter Password to move to enable next tab (12)"))
+                                            textInput("next1", "Enter Password to move to enable next tab", placeholder = "The password is: 12"))
                                     )
                                     
                             ),
                             tabItem(tabName = "section-2",
                                     h2("This is where a user would select how many people they identify"),
                                     
-                                    box(title = "Select the number of influcers:",
-                                        sliderInput("amt", "Amount of people to enter", min = 1, max=10, value = 1),
+                                    box(title = "Select the amount of people you regularly seek advice from:",
+                                        sliderInput("amt", "", min = 1, max=10, value = 1),
                                         br(),
-                                        h5("Enter the names of people you seek advice from"),
+                                        h5("Names of people below"),
                                         uiOutput("person")
                                         # ,textOutput("influence")
                                     ),
@@ -103,18 +103,18 @@ ui <- dashboardPagePlus(skin = "red",
                                     # actionButton('insertBtn', 'Insert'),
                                     # tags$div(id = 'placeholder'),
                                     box(title = "Move to next",
-                                        textInput("next2", "Enter Password to move to enable next tab (54)"))
+                                        textInput("next2", "Enter Password to move to enable next tab", placeholder = "The password is: 54"))
                             ),
                             tabItem(tabName = "section-3",
                                     h2("This is where a user give more information about their network"),
                                     
-                                    box(title = "Enter the name of Influencers",
+                                    box(title = "Enter names below",
                                         # uiOutput("person"),
                                         textOutput("influence")),
                                     
                                     box(plotOutput("distPlot")),
                                     box(sliderInput("bins", "Number of bins:", min = 5,  max = 10, value = 5)),
-                                    box(downloadLink("downloadData", "Generate Report"))
+                                    box(actionButton("downloadData", "Generate Report"))
                             )
                         )
                         
@@ -137,17 +137,17 @@ ui <- dashboardPagePlus(skin = "red",
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-    observeEvent(input$insertBtn, {
-        insertUI(
-            selector = '#placeholder',
-            ui = textInput('txt3', 'Seeks advice from: ')
-        )
-    })
+    # observeEvent(input$insertBtn, {
+    #     insertUI(
+    #         selector = '#placeholder',
+    #         ui = textInput('txt3', 'Seeks advice from: ')
+    #     )
+    # })
     
     col_names <- reactive(paste0("person", seq_len(input$amt)))
     
     output$person <- renderUI({
-        map(col_names(), ~ textInput(.x, NULL))
+        map(col_names(), ~ textInput(.x, NULL, placeholder = "Enter the name of the person you seek advice from"))
     })
     
     output$influence <- renderText({
@@ -155,11 +155,11 @@ server <- function(input, output, session) {
     })
     
     
-    observeEvent(input$removeBtn, {
-        removeUI(
-            selector = 'div:has(> #txt1)'
-        )
-    })
+    # observeEvent(input$removeBtn, {
+    #     removeUI(
+    #         selector = 'div:has(> #txt1)'
+    #     )
+    # })
     
     output$distPlot <- renderPlot({
         # generate bins based on input$bins from ui.R
@@ -171,19 +171,34 @@ server <- function(input, output, session) {
     })
     
     # Want to save off the survey information when the user is done (ie like maybe right before show them the results?)
+
+    # writeValues <- reactive({
+    #     file <- paste("data-", Sys.Date(), ".csv", sep="")
+    #     inputsList <- names(reactiveValuesToList(input))
+    #     exportVars <- paste0(inputsList, ",", sapply(inputsList, function(inpt) input[[inpt]]))
+    #     write(exportVars, file)
+    # })    
     
     
+    observeEvent(input$downloadData, {
+        file <- paste("data-", Sys.Date(), ".csv", sep="")
+        inputsList <- names(reactiveValuesToList(input))
+        exportVars <- paste0(inputsList, ",", sapply(inputsList, function(inpt) input[[inpt]]))
+        write(exportVars, file)
+    })
     
-    output$downloadData  <- downloadHandler(
+
         
-        filename = function() {
-            paste("data-", Sys.Date(), ".csv", sep="")
-        },
-        content = function(file) {
-            inputsList <- names(reactiveValuesToList(input))
-            exportVars <- paste0(inputsList, ",", sapply(inputsList, function(inpt) input[[inpt]]))
-            write(exportVars, file)
-        })  
+        # downloadHandler(
+        # 
+        # filename = function() {
+        #     paste("data-", Sys.Date(), ".csv", sep="")
+        # },
+        # content = function(file) {
+        #     inputsList <- names(reactiveValuesToList(input))
+        #     exportVars <- paste0(inputsList, ",", sapply(inputsList, function(inpt) input[[inpt]]))
+        #     write(exportVars, file)
+        # })  
     
     
     
