@@ -20,37 +20,38 @@ ui <- dashboardPagePlus(skin = "red",
                     
                     dashboardHeader(title = "Personal Network"), 
                     
-                    dashboardSidebar(width = 75,
-                                     conditionalPanel("input.next1 != 12 && input.next2 != 54", {
-                                         sidebarMenu(id = "sidebarmenu",
-                                                     menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x"))
-                                         )
-                                     }),
-
-                                     conditionalPanel("input.next1 == 12 && input.next2 != 54", {
-                                         sidebarMenu(id = "sidebarmenu",
-                                                     menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
-                                                     menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x"))
-                                         )
-                                     }),
-
-                                     conditionalPanel("input.next1 == 12 && input.next2 == 54", {
-                                         sidebarMenu(id = "sidebarmenu",
-                                                     menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
-                                                     menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x")),
-                                                     menuItem("",tabName = "section-3", icon = icon("comments", "fa-3x"))
-                                         )
-                                     })
-
-                    ),
-                    
                     # dashboardSidebar(width = 75,
+                    #                  conditionalPanel("input.next1 != 12 && input.next2 != 54", {
+                    #                      sidebarMenu(id = "sidebarmenu",
+                    #                                  menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x"))
+                    #                      )
+                    #                  }),
+                    # 
+                    #                  conditionalPanel("input.next1 == 12 && input.next2 != 54", {
+                    #                      sidebarMenu(id = "sidebarmenu",
+                    #                                  menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
+                    #                                  menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x"))
+                    #                      )
+                    #                  }),
+                    # 
+                    #                  conditionalPanel("input.next1 == 12 && input.next2 == 54", {
                     #                      sidebarMenu(id = "sidebarmenu",
                     #                                  menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
                     #                                  menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x")),
                     #                                  menuItem("",tabName = "section-3", icon = icon("comments", "fa-3x"))
                     #                      )
+                    #                  })
+                    # 
                     # ),
+                    
+                    dashboardSidebar(width = 75,
+                                         sidebarMenu(id = "sidebarmenu",
+                                                     menuItem("", tabName = "section-1", icon = icon("user-circle", "fa-3x")),
+                                                     menuItem("",tabName = "section-2", icon = icon("people-carry", "fa-3x")),
+                                                     menuItem("",tabName = "section-3", icon = icon("comments", "fa-3x")),
+                                                     menuItem("",tabName = "section-4", icon = icon("external-link-alt", "fa-3x"))
+                                         )
+                    ),
                     
                     dashboardBody(
                         
@@ -112,9 +113,20 @@ ui <- dashboardPagePlus(skin = "red",
                                         # uiOutput("person"),
                                         textOutput("influence")),
                                     
-                                    box(plotOutput("distPlot")),
-                                    box(sliderInput("bins", "Number of bins:", min = 5,  max = 10, value = 5)),
-                                    box(actionButton("downloadData", "Generate Report"))
+                                    # box(plotOutput("distPlot")),
+                                    # box(sliderInput("bins", "Number of bins:", min = 5,  max = 10, value = 5)),
+                                    # box(),
+                                    br(), br(),
+                                    actionButton("downloadData", "Show my Results")
+                            ),
+                            tabItem(tabName = "section-4",
+                                    h2("Show the homophily of your network"),
+                                    
+                                    box(title = "How similar is your network?",
+                                        h4("maybe pretty similar")
+                                        # uiOutput("person"),
+                                        )
+                                    
                             )
                         )
                         
@@ -149,6 +161,15 @@ server <- function(input, output, session) {
     output$person <- renderUI({
         map(col_names(), ~ textInput(.x, NULL, placeholder = "Enter the name of the person you seek advice from"))
     })
+    
+    # output$peoplechar <- renderUI({
+    #     map(col_names(), ~ selectizeInput(.x, NULL, 
+    #                                       list('Gender' = list("Male", "Female")),
+    #                                       options = list(
+    #                                           placeholder = 'Please select an option below',
+    #                                           onInitialize = I('function() { this.setValue(""); }')
+    #                                       )))
+    # })
     
     output$influence <- renderText({
         map_chr(col_names(), ~ input[[.x]])
