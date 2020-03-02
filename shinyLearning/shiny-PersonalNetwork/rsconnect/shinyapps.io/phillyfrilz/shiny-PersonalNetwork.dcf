@@ -1,0 +1,13 @@
+name: shiny-PersonalNetwork
+title: shiny-PersonalNetwork
+username:
+account: phillyfrilz
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1875509
+bundleId: 2842641
+url: https://phillyfrilz.shinyapps.io/shiny-PersonalNetwork/
+when: 1583119243.83909
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: data-2020-02-27.csv|studioapps_io_deploy_test.R
