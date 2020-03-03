@@ -138,7 +138,7 @@ ShowInfluencers <- function(input,output,session){
   observe({
     input$influ1
     # this will run on app load and then again every time "mytext" changes
-    print(1:10) 
+    # print(1:10) 
   })
   
 }

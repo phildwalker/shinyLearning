@@ -14,6 +14,7 @@ source("module.R")
 source("pw_module.R")
 source("results_module.R")
 source("head_foot.R")
+source("radar_Module.R")
 
 
 app_ui <-
@@ -71,10 +72,11 @@ app_ui <-
                             h4("How similar is your network?"),
                             fluidPage(
                                 ResultsUI(id = "ResultsOut", BOXtitle = "Your Results Below"),
+                                plotOutput(outputId = "RadarPlot")
+                            ),
                               fluidRow(
                                 ResultTextUI(id = "ResultsText")
                               )
-                            )
                             )
                   )),
     footer = dashboardFooter(left_text = leftText,
@@ -91,17 +93,26 @@ app_server <- function(input, output, session) {
 
   # Set passwords for each screen
   entPW <- callModule(Password, id = "Password_UI_sec1")
-  callModule(mod_server, id = "Password_UI_sec1", password = 100, section = "a[data-value='section-2']", enteredPW=entPW)
+  callModule(mod_server, id = "Password_UI_sec1", password = 100, 
+             section = "a[data-value='section-2']", enteredPW=entPW, moveTo="section-2", parent=session)
   
   entPW2 <- callModule(Password, id = "Password_UI_sec2")
-  callModule(mod_server, id = "Password_UI_sec2", password = 200, section = "a[data-value='section-3']", enteredPW=entPW2)
+  callModule(mod_server, id = "Password_UI_sec2", password = 200, 
+             section = "a[data-value='section-3']", enteredPW=entPW2, moveTo="section-3", parent=session)
   
   entPW3 <- callModule(Password, id = "Password_UI_sec3")
-  callModule(mod_server, id = "Password_UI_sec3", password = 300, section = "a[data-value='section-4']", enteredPW=entPW3)
+  callModule(mod_server, id = "Password_UI_sec3", password = 300, 
+             section = "a[data-value='section-4']", enteredPW=entPW3, moveTo="section-4", parent=session)
 
   callModule(BuildNetwork, id = "SelectBuild")  
   
   callModule(ShowInfluencers, id = "Influ")  
+  
+  
+  output$RadarPlot <- renderPlot({
+    plotRadar()
+  })
+  
   
 }
 

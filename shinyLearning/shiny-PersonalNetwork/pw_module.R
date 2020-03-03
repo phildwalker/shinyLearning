@@ -31,7 +31,7 @@ Password<-function(input,output,session){
 
 
 
-mod_server <- function(input, output, session, enteredPW, password = 111, section="section-2") {
+mod_server <- function(input, output, session, enteredPW, password, section, moveTo, parent) {
   ns <- session$ns
   
   output$pwdAnswer <- renderText({
@@ -42,6 +42,10 @@ mod_server <- function(input, output, session, enteredPW, password = 111, sectio
     if (enteredPW() == password) {
       # print("Oh boy the button click worked!")
       removeCssClass(selector = section, class = "inactiveLink") #  "a[data-value='section-2']" // cat(dQuote(paste0("a[data-value='",section,"']")))
+      
+      updateTabItems(session = parent, "sidebarmenu",
+                     selected = moveTo)
+      
     }
     if (enteredPW() != password) {
       print("Oh no, it didn't work!")
