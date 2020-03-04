@@ -22,7 +22,7 @@ SexList <-  list(
 DemographUI <- function(id, BOXtitle) {
   ns <- NS(id)
 
-  fluidPage(
+  # fluidPage(
     fluidRow(
       box(title = BOXtitle, status="primary", solidHeader = TRUE, collapsible = TRUE, #background = "black",
           selectizeInput(inputId = ns("q1"), 
@@ -41,7 +41,7 @@ DemographUI <- function(id, BOXtitle) {
                     label= "Question 4", placeholder = "Sample hint text")
       )
     )
-  )
+  # )
   
 }
 
@@ -114,7 +114,7 @@ BuildNetwork <- function(input,output,session){
 InfluencersUI <- function(id){
   ns <- NS(id)
   
-  fluidPage(
+  fluidRow(
     box(
     textInput("influ1", "Influence name 1", placeholder = "The first person you go to for advice"),
     textInput("influ2", "Influence name 2", placeholder = "The second person you go to for advice"),

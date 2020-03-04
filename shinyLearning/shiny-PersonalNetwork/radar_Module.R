@@ -8,12 +8,11 @@ library(scales)
 # library(tibble)
 
 # p <- 
-  mtcars %>% 
+SampleData <-  mtcars %>% 
   tibble::as_tibble(rownames = "group") %>% 
   mutate_at(vars(-group), rescale) %>% 
   tail(1) %>% 
-  select(1:10) %>% 
-  ggradar::ggradar()
+  select(1:10) 
 
 # p + ggplot2::theme_bw()
 
