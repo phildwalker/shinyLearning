@@ -1,7 +1,7 @@
 # save and load results
 
 
-saveData <- function(input) {
+saveData <- function(input, session.id) {
   # put variables in a data frame
   data <- data.frame(matrix(nrow=1,ncol=0))
   for (x in fields) {
@@ -20,7 +20,8 @@ saveData <- function(input) {
   fileName <- sprintf(
     "%s_%s.rds",
     as.integer(Sys.Date()),
-    digest::digest(data)
+    session.id
+    # digest::digest(data)
   )
   
   # fileName <- session$token

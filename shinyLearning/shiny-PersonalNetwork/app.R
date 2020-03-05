@@ -33,6 +33,7 @@ ui <-
     
     dashboardBody(useShinyjs(), useShinyalert(),
                   tabItems(
+                    # id = "tabs",
                     tabItem(tabName = "section-1",
                             # actionButton("submit", "Submit"),
                             box(
@@ -54,8 +55,16 @@ ui <-
                               title = "Select the amount of people you regularly seek advice from:",
                               sliderInput("amt", "", min = 1, max=10, value = 1),
                               br(),
-                              text_influ(value = 1),
-                              text_influ(value = 2)
+                              text_influ(personNum = 1),
+                              text_influ(personNum = 2),
+                              text_influ(personNum = 3),
+                              text_influ(personNum = 4),
+                              text_influ(personNum = 5),
+                              text_influ(personNum = 6),
+                              text_influ(personNum = 7),
+                              text_influ(personNum = 8),
+                              text_influ(personNum = 9),
+                              text_influ(personNum = 10)
                             ),
                             fluidPage(
                               Password_UI(id = "PWD_sec2")
@@ -65,7 +74,32 @@ ui <-
                     tabItem(tabName = "section-3",
                             h2("This is where a user give more information about their network"),
                             br(),
-                            actionButton("downloadData", "Show my Results"),
+                            
+                            # box(id = "boxinflu1",
+                            #   title = textOutput('Influ1_nm'), status="primary", solidHeader = TRUE, collapsible = TRUE, collapsed=TRUE,
+                            #   select_gender(id="Influ1_gender"),
+                            #   select_age(id="Influ1_age"),
+                            #   select_SES(id = "Influ1_SES"),
+                            #   select_ED(id = "Influ1_ED")
+                            # ),
+                            # box(id = "boxinflu2",
+                            #     title = textOutput('Influ2_nm'), status="primary", solidHeader = TRUE, collapsible = TRUE, collapsed=TRUE,
+                            #     select_gender(id="Influ2_gender"),
+                            #     select_age(id="Influ2_age"),
+                            #     select_SES(id = "Influ2_SES"),
+                            #     select_ED(id = "Influ2_ED")
+                            # ),
+                            fullBox(linkNM = "influ1"),
+                            fullBox(linkNM = "influ2"),
+                            fullBox(linkNM = "influ3"),
+                            fullBox(linkNM = "influ4"),
+                            fullBox(linkNM = "influ5"),
+                            fullBox(linkNM = "influ6"),
+                            fullBox(linkNM = "influ7"),
+                            fullBox(linkNM = "influ8"),
+                            fullBox(linkNM = "influ9"),
+                            fullBox(linkNM = "influ10"),
+                            # actionButton("downloadData", "Show my Results"),
                             fluidPage(
                               Password_UI(id = "PWD_sec3")
                             )
@@ -87,15 +121,17 @@ ui <-
 # Reactive functions ----
 server = function(input, output, session) {
   
-  # When the Submit button is clicked, save the form data
+  session.id <- reactive({ as.character(floor(runif(1)*1e20)) })
+
+  # When whenever the user changes the tab they are on, save the data
   observeEvent(input$sidebarmenu, {
-    saveData(input)
+    saveData(input, session.id())
 
     # thank the user
-    n_responses <- length(list.files(outputDir))
-    response <- paste0("Thank you for completing the survey! You are respondant ",
-                       n_responses, ".")
-    showNotification(response, duration = 0, type = "message")
+    # n_responses <- length(list.files(outputDir))
+    # response <- paste0("Thank you for completing the survey! You are respondant ",
+    #                    n_responses, ".")
+    # showNotification(response, duration = 0, type = "message")
   })
   
 
@@ -119,8 +155,193 @@ server = function(input, output, session) {
   callModule(mod_server, id = "PWD_sec3", password = 300, 
              section = "a[data-value='section-4']", enteredPW=entPW3, moveTo="section-4", parent=session)
   
+  output$influ1_nm <- renderText({
+    paste0("Demographics for: ",input$influ1)
+  })
+ 
+  output$influ2_nm <- renderText({
+    paste0("Demographics for: ",input$influ2)
+  })
   
+  output$influ3_nm <- renderText({
+    paste0("Demographics for: ",input$influ3)
+  })
   
+  output$influ4_nm <- renderText({
+    paste0("Demographics for: ",input$influ4)
+  })
+  
+  output$influ5_nm <- renderText({
+    paste0("Demographics for: ",input$influ5)
+  })
+  
+  output$influ6_nm <- renderText({
+    paste0("Demographics for: ",input$influ6)
+  })
+  
+  output$influ7_nm <- renderText({
+    paste0("Demographics for: ",input$influ7)
+  })
+  
+  output$influ8_nm <- renderText({
+    paste0("Demographics for: ",input$influ8)
+  })
+
+  output$influ9_nm <- renderText({
+    paste0("Demographics for: ",input$influ9)
+  })
+  
+  output$influ10_nm <- renderText({
+    paste0("Demographics for: ",input$influ10)
+  })
+  
+  ## observe the slide change and show/hide the different inputs
+  observeEvent(input$amt, {
+    shinyjs::hide(id = "influ1")
+    shinyjs::hide(id = "outer-influ1")
+    shinyjs::hide(id = "influ2")
+    shinyjs::hide(id = "outer-influ2")
+    shinyjs::hide(id = "influ3")
+    shinyjs::hide(id = "outer-influ3")
+    shinyjs::hide(id = "influ4")
+    shinyjs::hide(id = "outer-influ4")
+    shinyjs::hide(id = "influ5")
+    shinyjs::hide(id = "outer-influ5")
+    shinyjs::hide(id = "influ6")
+    shinyjs::hide(id = "outer-influ6")
+    shinyjs::hide(id = "influ7")
+    shinyjs::hide(id = "outer-influ7")
+    shinyjs::hide(id = "influ8")
+    shinyjs::hide(id = "outer-influ8")
+    shinyjs::hide(id = "influ9")
+    shinyjs::hide(id = "outer-influ9")
+    shinyjs::hide(id = "influ10")
+    shinyjs::hide(id = "outer-influ10")
+      
+    if(input$amt  == 1){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1") }
+    if(input$amt  == 2){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") }
+    if(input$amt  == 3){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3") }
+    if(input$amt  == 4){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3")    
+      shinyjs::show(id = "influ4")
+      shinyjs::show(id = "outer-influ4") }
+    if(input$amt  == 5){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3")    
+      shinyjs::show(id = "influ4")
+      shinyjs::show(id = "outer-influ4")
+      shinyjs::show(id = "influ5")
+      shinyjs::show(id = "outer-influ5")}
+    if(input$amt  == 6){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3")    
+      shinyjs::show(id = "influ4")
+      shinyjs::show(id = "outer-influ4")
+      shinyjs::show(id = "influ5")
+      shinyjs::show(id = "outer-influ5")    
+      shinyjs::show(id = "influ6")
+      shinyjs::show(id = "outer-influ6")}
+    if(input$amt  == 7){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3")    
+      shinyjs::show(id = "influ4")
+      shinyjs::show(id = "outer-influ4")
+      shinyjs::show(id = "influ5")
+      shinyjs::show(id = "outer-influ5")    
+      shinyjs::show(id = "influ6")
+      shinyjs::show(id = "outer-influ6")
+      shinyjs::show(id = "influ7")
+      shinyjs::show(id = "outer-influ7")}
+    if(input$amt  == 8){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3")    
+      shinyjs::show(id = "influ4")
+      shinyjs::show(id = "outer-influ4")
+      shinyjs::show(id = "influ5")
+      shinyjs::show(id = "outer-influ5")    
+      shinyjs::show(id = "influ6")
+      shinyjs::show(id = "outer-influ6")
+      shinyjs::show(id = "influ7")
+      shinyjs::show(id = "outer-influ7")
+      shinyjs::show(id = "influ8")
+      shinyjs::show(id = "outer-influ8")}
+    if(input$amt  == 9){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3")    
+      shinyjs::show(id = "influ4")
+      shinyjs::show(id = "outer-influ4")
+      shinyjs::show(id = "influ5")
+      shinyjs::show(id = "outer-influ5")    
+      shinyjs::show(id = "influ6")
+      shinyjs::show(id = "outer-influ6")
+      shinyjs::show(id = "influ7")
+      shinyjs::show(id = "outer-influ7")
+      shinyjs::show(id = "influ8")
+      shinyjs::show(id = "outer-influ8")
+      shinyjs::show(id = "influ9")
+      shinyjs::show(id = "outer-influ9")}
+    if(input$amt  == 10){
+      shinyjs::show(id = "influ1")
+      shinyjs::show(id = "outer-influ1")
+      shinyjs::show(id = "influ2")
+      shinyjs::show(id = "outer-influ2") 
+      shinyjs::show(id = "influ3") 
+      shinyjs::show(id = "outer-influ3")    
+      shinyjs::show(id = "influ4")
+      shinyjs::show(id = "outer-influ4")
+      shinyjs::show(id = "influ5")
+      shinyjs::show(id = "outer-influ5")    
+      shinyjs::show(id = "influ6")
+      shinyjs::show(id = "outer-influ6")
+      shinyjs::show(id = "influ7")
+      shinyjs::show(id = "outer-influ7")
+      shinyjs::show(id = "influ8")
+      shinyjs::show(id = "outer-influ8")
+      shinyjs::show(id = "influ9")
+      shinyjs::show(id = "outer-influ9")
+      shinyjs::show(id = "influ10")
+      shinyjs::show(id = "outer-influ10")}
+    
+  })
+  
+   
 }
 
 shinyApp(ui, server)

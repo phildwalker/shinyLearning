@@ -3,10 +3,17 @@
 outputDir <- "responses"
 
 # Define the fields we want to save from the form
-fields <- c("self_age", 
-            "self_gender",
-            "self_SES",
-            "self_ED")
+fields <- c("self_age", "self_gender", "self_SES","self_ED", "amt",
+            "influ1_age", "influ1_gender", "influ1_SES","influ1_ED",
+            "influ2_age", "influ2_gender", "influ2_SES","influ2_ED",
+            "influ3_age", "influ3_gender", "influ3_SES","influ3_ED",
+            "influ4_age", "influ4_gender", "influ4_SES","influ4_ED",
+            "influ5_age", "influ5_gender", "influ5_SES","influ5_ED",
+            "influ6_age", "influ6_gender", "influ6_SES","influ6_ED",
+            "influ7_age", "influ7_gender", "influ7_SES","influ7_ED",
+            "influ8_age", "influ8_gender", "influ8_SES","influ8_ED",
+            "influ9_age", "influ9_gender", "influ9_SES","influ9_ED",
+            "influ10_age", "influ10_gender", "influ10_SES","influ10_ED")
 
 
 Placeholder_list <- list(
@@ -70,11 +77,36 @@ select_ED <- function(id = "q4_ED"){
 text_sample <- textInput(inputId = "q4_text", 
                          label= "Question 4", placeholder = "Sample hint text")
 
-text_influ <- function(id = "influ", value){
-  textInput(paste0(id,value), paste0("Influence name ",value), placeholder = "Type the name of the person")
+text_influ <- function(id = "influ", personNum){
+  textInput(paste0(id,personNum), paste0("Influence name ",personNum), placeholder = "Type the name of the person") #, value = " "
 }
 
 
-
+fullBox <- function(linkNM){
+  
+  boxTitle <- (paste0(linkNM,"_nm"))
+  
+  div(id = paste0("outer-",linkNM),
+    box(id = paste0("box",linkNM),
+        title = textOutput(boxTitle), status="primary", solidHeader = TRUE, collapsible = TRUE, collapsed=TRUE,
+        select_gender(id=paste0(linkNM,"_gender")),
+        select_age(id=paste0(linkNM,"_age")),
+        select_SES(id = paste0(linkNM,"_SES")),
+        select_ED(id = paste0(linkNM,"_ED"))
+    )
+  )
+}
+  
+ 
+  
+  
 
 help_demo <- helpText("You can write help text in your form this way")
+
+
+
+
+
+
+
+
