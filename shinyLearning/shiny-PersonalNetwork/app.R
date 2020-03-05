@@ -35,9 +35,17 @@ ui <-
                   tabItems(
                     # id = "tabs",
                     tabItem(tabName = "section-1",
+                            h2("Welcome!"),
+                            HTML(
+                              paste(
+                                h5("Thank you for your participation in this exercise."), #'<br/>',
+                                h5("Please fill out every section completely and wait for your instructor before moving on to the next section"),
+                                h5("After recieving and entering the code from your instructor the next section will become available.")
+                              )
+                            ),
                             # actionButton("submit", "Submit"),
                             box(
-                              title = "Sample Demographics", status="primary", solidHeader = TRUE, collapsible = TRUE,
+                              title = "Your Demographics", status="primary", solidHeader = TRUE, collapsible = TRUE,
                               select_gender(id="self_gender"),
                               select_age(id="self_age"),
                               select_SES(id = "self_SES"),
@@ -53,7 +61,7 @@ ui <-
                             h4("This is where a user would select how many people they identify"),
                             box(
                               title = "Select the amount of people you regularly seek advice from:",
-                              sliderInput("amt", "", min = 1, max=10, value = 1),
+                              sliderInput("amt", "", min = 1, max=10, value = 5),
                               br(),
                               text_influ(personNum = 1),
                               text_influ(personNum = 2),
