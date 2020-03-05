@@ -36,13 +36,9 @@ ui <-
                     # id = "tabs",
                     tabItem(tabName = "section-1",
                             h2("Welcome!"),
-                            HTML(
-                              paste(
-                                h5("Thank you for your participation in this exercise."), #'<br/>',
-                                h5("Please fill out every section completely and wait for your instructor before moving on to the next section"),
-                                h5("After recieving and entering the code from your instructor the next section will become available.")
-                              )
-                            ),
+                            h4("Thank you for your participation in this exercise."), #'<br/>',
+                            h5("Please fill out every section completely and wait for your instructor before moving on to the next section"),
+                            h5("After recieving and entering the code from your instructor the next section will become available."),
                             # actionButton("submit", "Submit"),
                             box(
                               title = "Your Demographics", status="primary", solidHeader = TRUE, collapsible = TRUE,

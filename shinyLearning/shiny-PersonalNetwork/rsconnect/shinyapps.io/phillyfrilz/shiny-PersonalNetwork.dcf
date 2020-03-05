@@ -5,9 +5,9 @@ account: phillyfrilz
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1875509
-bundleId: 2842641
+bundleId: 2853713
 url: https://phillyfrilz.shinyapps.io/shiny-PersonalNetwork/
-when: 1583119243.83909
+when: 1583414092.34902
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: data-2020-02-27.csv|studioapps_io_deploy_test.R
+ignoredFiles: studioapps_io_deploy_test.R
