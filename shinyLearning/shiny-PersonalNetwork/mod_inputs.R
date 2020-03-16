@@ -22,8 +22,8 @@ Placeholder_list <- list(
 )
 
 AgeList <- list(
-  'Adolescent' = list("[3-12]", "[13-19]"),
-  'Young Adults' = list("[20-29]", "[30-39]"), 
+  # 'Adolescent' = list("[3-12]", "[13-19]"),
+  'Young Adults' = list("[16-19]","[20-29]", "[30-39]"), 
   'Middle Age' = list("[40-49]", "[50-59]"),
   'Elder' = list("[60-69]", "[70-79]", "[80+]")
 )
@@ -41,34 +41,34 @@ EduList <-  list(
 )
 
 
-select_gender <- function(id="q1_gender"){
+select_gender <- function(id="q1_gender", wording="their"){
   selectizeInput(inputId = id, 
-                 label= HTML("<strong>Question 1:</strong> <br> What is your gender?"),
+                 label= HTML("<strong>Question 1:</strong> <br>", paste0(" What is ",wording," gender?")),
                  choices=SexList,
                  options = Placeholder_list
   )
 }
   
 
-select_age <- function(id = "q3_age"){
+select_age <- function(id = "q3_age", wording="their"){
   selectizeInput(inputId = id, 
-                             label=HTML("<strong>Question 3:</strong> <br> What is your age?"),
+                             label=HTML("<strong>Question 3:</strong> <br>", paste0(" What is ",wording," age?")),
                              choices=AgeList,
                              options = Placeholder_list
                              )
 }
  
-select_SES <- function(id = "q2_SES"){
+select_SES <- function(id = "q2_SES", wording="their"){
   selectizeInput(inputId = id, 
-                 label=HTML("<strong>Question 3:</strong> <br> What is your SES?"),
+                 label=HTML("<strong>Question 3:</strong> <br>", paste0(" What is ",wording," SES?")),
                  choices=SESList,
                  options = Placeholder_list
   )
 } 
 
-select_ED <- function(id = "q4_ED"){
+select_ED <- function(id = "q4_ED", wording="their"){
   selectizeInput(inputId = id, 
-                 label=HTML("<strong>Question 3:</strong> <br> What is your Education?"),
+                 label=HTML("<strong>Question 3:</strong> <br>", paste0(" What is ",wording," education level?")),
                  choices=EduList,
                  options = Placeholder_list
   )
